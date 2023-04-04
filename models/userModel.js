@@ -1,7 +1,6 @@
 import { nanoid } from 'nanoid';
 import { usersDatabase } from '../database/database.js';
 
-
 async function usernameExists(username) {
   const usernames = await usersDatabase.find({ username });
   if (usernames.length > 0) {
@@ -11,8 +10,8 @@ async function usernameExists(username) {
 }
 
 async function createUser(username, password) {
-  const id = nanoid()
-  await usersDatabase.insert({username, password, id });
+  const id = nanoid();
+  await usersDatabase.insert({ username, password, id });
   return id;
 }
 

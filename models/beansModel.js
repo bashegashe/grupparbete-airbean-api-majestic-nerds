@@ -1,9 +1,7 @@
 import { menuDatabase } from '../database/database.js';
 
-// const menuDb = menuDatabase;
-
-async function getMenuFromDatabase() {
-  return menuDatabase;
+function getMenuFromDatabase() {
+  return menuDatabase.find({});
 }
 
 export default getMenuFromDatabase;
