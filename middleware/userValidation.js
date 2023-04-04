@@ -1,16 +1,18 @@
 import { usernameExists, userIdExists } from '../models/userModel.js';
 
 async function checkUsername(req, res, next) {
-  const { username } = req.body;
+  const { body } = req;
 
-  // Kolla här också om username överhuvudtaget skickats med i body innan vi söker i databasen?
-
-  const exists = await usernameExists(username);
-
-  if (exists) {
-    res.json({ success: false, message: 'Username already exists' });
+  if ('username' in body) {
+    const exists = await usernameExists(body.username);
+    console.log(exists);
+    if (exists) {
+      res.json({ success: false, message: 'Username already exists' });
+    } else {
+      next();
+    }
   } else {
-    next();
+    res.json({ success: false, message: 'Username missing in body' });
   }
 }
 
