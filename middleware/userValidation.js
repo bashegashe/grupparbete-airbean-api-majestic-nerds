@@ -5,7 +5,6 @@ async function checkUsername(req, res, next) {
 
   if ('username' in body) {
     const exists = await usernameExists(body.username);
-    console.log(exists);
     if (exists) {
       res.json({ success: false, message: 'Username already exists' });
     } else {
@@ -13,6 +12,16 @@ async function checkUsername(req, res, next) {
     }
   } else {
     res.json({ success: false, message: 'Username missing in body' });
+  }
+}
+
+async function checkLogin(req, res, next) {
+  const { body } = req;
+
+  if ('username' in body && 'password' in body) {
+    next();
+  } else {
+    res.json({ success: false, message: 'username or password missing in body' });
   }
 }
 
@@ -28,4 +37,4 @@ async function checkUserId(req, res, next) {
   }
 }
 
-export { checkUsername, checkUserId };
+export { checkUsername, checkUserId, checkLogin };

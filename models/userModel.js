@@ -19,4 +19,16 @@ async function userIdExists(userId) {
   return usersDatabase.find({ userId });
 }
 
-export { usernameExists, userIdExists, createUser };
+async function authenticateLogin(username, password) {
+  const authUser = await usersDatabase.findOne({ $and: [{ username }, { password }] });
+
+  if (authUser) {
+    return { success: true, id: authUser.id };
+  }
+
+  return { success: false, message: 'Wrong username or password' };
+}
+
+export {
+  usernameExists, userIdExists, createUser, authenticateLogin,
+};
