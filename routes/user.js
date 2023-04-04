@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/signup', checkUsername, RegisterController.register);
 router.post('/login', checkLogin, LoginController.login);
+router.post('/status', StatusController.getStatus);
 router.get('/history', HistoryController.getHistory);
-router.get('/status', StatusController.getStatus);
 
 export default router;
