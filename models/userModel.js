@@ -2,8 +2,8 @@ import { nanoid } from 'nanoid';
 import { usersDatabase } from '../database/database.js';
 
 async function usernameExists(username) {
-  const usernames = await usersDatabase.find({ username });
-  if (usernames.length > 0) {
+  const usernames = await usersDatabase.findOne({ username });
+  if (usernames) {
     return true;
   }
   return false;
