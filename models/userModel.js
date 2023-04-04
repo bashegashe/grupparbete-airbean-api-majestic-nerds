@@ -1,4 +1,4 @@
-import { usersDatabase } from '../database/database';
+import { usersDatabase } from '../database/database.js';
 
 async function usernameExists(username) {
   return usersDatabase.find({ username });

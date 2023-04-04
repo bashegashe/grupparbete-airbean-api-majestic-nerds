@@ -1,6 +1,6 @@
-const Datastore = require('nedb-promise');
+import Datastore from 'nedb-promise';
 
-const usersDatabase = new Datastore({ filename: 'users.db', autoload: true });
-const historyDatabase = new Datastore({ filename: 'history.db', autoload: true });
+const usersDatabase = new Datastore({ filename: './database/users.db', autoload: true });
+const historyDatabase = new Datastore({ filename: './database/history.db', autoload: true });
 
 export { usersDatabase, historyDatabase };

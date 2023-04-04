@@ -1,4 +1,4 @@
-import { usernameExists, userIdExists } from '../models/userModel';
+import { usernameExists, userIdExists } from '../models/userModel.js';
 
 async function checkUsername(req, res, next) {
   const { username } = req.body;
