@@ -26,15 +26,21 @@ async function checkLogin(req, res, next) {
 }
 
 async function checkUserId(req, res, next) {
-  const { userId } = req.body;
+  const { id } = req.body;
 
-  const exists = await userIdExists(userId);
+  if (id === undefined) {
+    return next();
+  }
+
+  const exists = await userIdExists(id);
 
   if (exists) {
-    next();
+    res.locals.isAuthorized = true;
   } else {
-    res.status(401).json({ success: false, error: 'Unauthorized access' });
+    return res.status(401).json({ success: false, error: 'Unauthorized access' });
   }
+
+  return next();
 }
 
 export { checkUsername, checkUserId, checkLogin };

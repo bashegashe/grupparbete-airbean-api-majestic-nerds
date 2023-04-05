@@ -16,7 +16,7 @@ async function createUser(username, password) {
 }
 
 async function userIdExists(userId) {
-  return usersDatabase.find({ userId });
+  return usersDatabase.findOne({ id: userId });
 }
 
 async function authenticateLogin(username, password) {
