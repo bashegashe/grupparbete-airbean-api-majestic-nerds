@@ -4,4 +4,12 @@ function getMenuFromDatabase() {
   return menuDatabase.find({});
 }
 
-export default getMenuFromDatabase;
+async function itemExists(item) {
+  const product = await menuDatabase.findOne({ title: item.name, price: item.price });
+  if (!product) {
+    return false;
+  }
+  return true;
+}
+
+export { getMenuFromDatabase, itemExists };

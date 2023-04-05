@@ -1,4 +1,4 @@
-import getMenuFromDatabase from '../../models/beansModel.js';
+import { getMenuFromDatabase } from '../../models/beansModel.js';
 
 const MenuController = {
   async getMenu(req, res) {
