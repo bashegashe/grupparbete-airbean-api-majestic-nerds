@@ -2,13 +2,9 @@ import { insertOrder } from '../../models/beansModel.js';
 
 const MakeOrderController = {
   async makeOrder(req, res) {
-    const { details } = req.body;
+    const { details, userId } = req.body;
 
-    if (res.locals.isAuthorized) {
-      await insertOrder(details.order, req.body.userId);
-    } else {
-      await insertOrder(details.order);
-    }
+    await insertOrder(details.order, userId);
 
     res.json({ success: true, details });
   },

@@ -25,22 +25,19 @@ async function checkLogin(req, res, next) {
   }
 }
 
-async function checkUserId(req, res, next) {
+async function isAuthenticated(req, res, next) {
   const { userId } = req.body;
 
-  if (!userId) {
-    return next();
+  if (userId && await userIdExists(userId)) {
+    next();
   }
 
-  const exists = await userIdExists(userId);
-
-  if (exists) {
-    res.locals.isAuthorized = true;
-  } else {
-    return res.status(401).json({ success: false, error: 'Unauthorized access' });
-  }
-
-  return next();
+  res.status(401).json({
+    success: false,
+    error: 'Unauthorized access',
+  });
 }
 
-export { checkUsername, checkUserId, checkLogin };
+export {
+  checkUsername, checkLogin, isAuthenticated,
+};
