@@ -1,7 +1,4 @@
 import { itemExists } from '../models/beansModel.js';
-/*
-  Middleware för att validera så att produkterna i en order finns i menyn.
-*/
 
 async function checkOrder(req, res, next) {
   const { body } = req;
@@ -14,10 +11,12 @@ async function checkOrder(req, res, next) {
     return res.status(400).json({ success: false, message: 'Invalid or no data in order' });
   }
 
+  if (body.userId === '') {
+    return res.status(401).json({ success: false, error: 'Unauthorized access' });
+  }
+
   let error = false;
-  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < body.details.order.length; i++) {
-    // eslint-disable-next-line no-await-in-loop
     const exists = await itemExists(body.details.order[i]);
     if (!exists) {
       error = true;
