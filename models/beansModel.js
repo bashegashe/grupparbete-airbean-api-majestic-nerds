@@ -30,4 +30,31 @@ async function insertOrder(order, id) {
   historyDatabase.insert(orderObj);
 }
 
-export { getMenuFromDatabase, itemExists, insertOrder };
+async function findOrderInDatabase(orderNr) {
+  const searchResult = await historyDatabase.findOne({ orderNr });
+  const orderObj = {
+    success: false,
+  };
+
+  if (searchResult) {
+    orderObj.success = true;
+    orderObj.order = searchResult;
+
+    const estDeliveryMin = Math.round(((searchResult.timestamp
+    + searchResult.orderDeliveryTime * 60000) - Date.now()) / 60000);
+
+    if (estDeliveryMin < 0) {
+      orderObj.message = 'Order is delivered';
+    } else {
+      orderObj.message = `Order will be delivered in ${estDeliveryMin} minutes`;
+    }
+  } else {
+    orderObj.message = 'Order not found';
+  }
+
+  return orderObj;
+}
+
+export {
+  getMenuFromDatabase, itemExists, insertOrder, findOrderInDatabase,
+};

@@ -1,8 +1,12 @@
+import { findOrderInDatabase } from '../../models/beansModel.js';
+
 const GetOrderController = {
   async getOrder(req, res) {
-    const { orderId } = req.params;
+    const { orderNr } = req.params;
 
-    res.json({ success: true, orderId });
+    const orderObj = await findOrderInDatabase(orderNr);
+
+    res.json(orderObj);
   },
 };
 

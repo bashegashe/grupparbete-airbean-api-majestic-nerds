@@ -2,11 +2,11 @@ import { getMenuFromDatabase } from '../../models/beansModel.js';
 
 const MenuController = {
   async getMenu(req, res) {
-    const menuRes = await getMenuFromDatabase();
+    const menu = await getMenuFromDatabase();
 
     const result = {
       success: true,
-      menu: menuRes,
+      menu,
     };
 
     res.status(200).json(result);

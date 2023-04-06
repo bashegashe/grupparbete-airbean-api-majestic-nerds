@@ -20,5 +20,15 @@ async function checkOrder(req, res, next) {
   return res.status(400).json({ success: false, message: 'Could not create order' });
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { checkOrder };
+async function validateOrderNr(req, res, next) {
+  const { orderNr } = req.params;
+
+  if (orderNr === undefined) {
+    return res.status(400).json({ success: false, message: 'Order number missing' });
+  } if (orderNr.length !== 21) {
+    return res.status(400).json({ success: false, message: 'Order number is not valid' });
+  }
+  return next();
+}
+
+export { checkOrder, validateOrderNr };
