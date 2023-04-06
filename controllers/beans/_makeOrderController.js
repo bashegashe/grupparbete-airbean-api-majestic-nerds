@@ -5,7 +5,7 @@ const MakeOrderController = {
     const { details } = req.body;
 
     if (res.locals.isAuthorized) {
-      await insertOrder(details.order, req.body.id);
+      await insertOrder(details.order, req.body.userId);
     } else {
       await insertOrder(details.order);
     }

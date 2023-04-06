@@ -5,6 +5,15 @@ import { itemExists } from '../models/beansModel.js';
 
 async function checkOrder(req, res, next) {
   const { body } = req;
+
+  if (!body?.details?.order) {
+    return res.status(400).json({ success: false, message: 'Invalid or no data in order' });
+  }
+
+  if (!(Array.isArray(body.details.order) && body.details.order.length > 0)) {
+    return res.status(400).json({ success: false, message: 'Invalid or no data in order' });
+  }
+
   let error = false;
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < body.details.order.length; i++) {

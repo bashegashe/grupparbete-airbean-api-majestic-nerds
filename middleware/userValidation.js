@@ -26,13 +26,13 @@ async function checkLogin(req, res, next) {
 }
 
 async function checkUserId(req, res, next) {
-  const { id } = req.body;
+  const { userId } = req.body;
 
-  if (id === undefined) {
+  if (!userId) {
     return next();
   }
 
-  const exists = await userIdExists(id);
+  const exists = await userIdExists(userId);
 
   if (exists) {
     res.locals.isAuthorized = true;

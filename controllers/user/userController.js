@@ -12,8 +12,7 @@
 import HistoryController from './_historyController.js';
 import LoginController from './_loginController.js';
 import RegisterController from './_registerController.js';
-import StatusController from './_statusController.js';
 
 export {
-  HistoryController, LoginController, RegisterController, StatusController,
+  HistoryController, LoginController, RegisterController,
 };

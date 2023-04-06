@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { usersDatabase } from '../database/database.js';
+import { usersDatabase, historyDatabase } from '../database/database.js';
 
 async function usernameExists(username) {
   const usernames = await usersDatabase.findOne({ username });
@@ -10,25 +10,36 @@ async function usernameExists(username) {
 }
 
 async function createUser(username, password) {
-  const id = nanoid();
-  await usersDatabase.insert({ username, password, id });
-  return id;
+  const userId = nanoid();
+  await usersDatabase.insert({ username, password, userId });
+  return userId;
 }
 
 async function userIdExists(userId) {
-  return usersDatabase.findOne({ id: userId });
+  return usersDatabase.findOne({ userId });
 }
 
 async function authenticateLogin(username, password) {
   const authUser = await usersDatabase.findOne({ $and: [{ username }, { password }] });
 
   if (authUser) {
-    return { success: true, id: authUser.id };
+    return { success: true, userId: authUser.userId };
   }
 
   return { success: false, message: 'Wrong username or password' };
 }
 
+async function getUserHistory(userId) {
+  const orderHistory = await historyDatabase.find({ userId });
+
+  const result = {
+    success: true,
+    orderHistory,
+  };
+
+  return result;
+}
+
 export {
-  usernameExists, userIdExists, createUser, authenticateLogin,
+  usernameExists, userIdExists, createUser, authenticateLogin, getUserHistory,
 };

@@ -13,7 +13,7 @@ async function itemExists(item) {
   return true;
 }
 
-async function insertOrder(order, id) {
+async function insertOrder(order, userId) {
   const total = order.reduce((acc, cur) => acc + cur.price, 0);
 
   const orderObj = {
@@ -23,8 +23,8 @@ async function insertOrder(order, id) {
     orderDeliveryTime: Math.floor(Math.random() * 21 + 10),
   };
 
-  if (id) {
-    orderObj.id = id;
+  if (userId) {
+    orderObj.userId = userId;
   }
 
   historyDatabase.insert(orderObj);
