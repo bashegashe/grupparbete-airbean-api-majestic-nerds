@@ -4,9 +4,9 @@ const MakeOrderController = {
   async makeOrder(req, res) {
     const { details, userId } = req.body;
 
-    await insertOrder(details.order, userId);
+    const result = await insertOrder(details.order, userId);
 
-    res.json({ success: true, details });
+    res.json(result);
   },
 };
 
