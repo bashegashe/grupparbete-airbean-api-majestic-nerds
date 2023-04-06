@@ -21,7 +21,7 @@ async function checkLogin(req, res, next) {
   if ('username' in body && 'password' in body) {
     next();
   } else {
-    res.json({ success: false, message: 'username or password missing in body' });
+    res.json({ success: false, message: 'Username or password missing in body' });
   }
 }
 

@@ -11,7 +11,9 @@ app.use(express.json());
 app.use('/api/user', userRouter);
 app.use('/api/beans', beansRouter);
 
-// Lägg middleware här för skicka tillbaka error om att route inte finns
+app.use((req, res) => {
+  res.status(404).json({ error: 'Endpoint not found' });
+});
 
 app.listen(PORT, () => {
   console.log(`Server started (PORT: ${PORT})`);
