@@ -21,6 +21,7 @@ async function checkOrder(req, res, next) {
     const exists = await itemExists(body.details.order[i]);
     if (!exists) {
       error = true;
+      break;
     }
   }
   if (!error) {
