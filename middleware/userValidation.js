@@ -1,29 +1,44 @@
 import { usernameExists, userIdExists } from '../models/userModel.js';
 
-async function checkUsername(req, res, next) {
-  const { username } = req.body;
+async function checkRegistration(req, res, next) {
+  const { body } = req;
 
-  // Kolla här också om username överhuvudtaget skickats med i body innan vi söker i databasen?
+  if (!body?.username || !body?.password) {
+    return res.json({ success: false, message: 'Username or password missing in body' });
+  }
 
-  const exists = await usernameExists(username);
+  const exists = await usernameExists(body.username);
 
   if (exists) {
-    res.json({ success: false, message: 'Username already exists' });
-  } else {
-    next();
+    return res.json({ success: false, message: 'Username already exists' });
   }
+
+  next();
 }
 
-async function checkUserId(req, res, next) {
+async function checkLogin(req, res, next) {
+  const { body } = req;
+
+  if (!body?.username || !body?.password) {
+    return res.json({ success: false, message: 'Username or password missing in body' });
+  }
+
+  next();
+}
+
+async function isAuthenticated(req, res, next) {
   const { userId } = req.body;
 
-  const exists = await userIdExists(userId);
-
-  if (exists) {
-    next();
-  } else {
-    res.status(401).json({ success: false, error: 'Unauthorized access' });
+  if (userId && await userIdExists(userId)) {
+    return next();
   }
+
+  res.status(401).json({
+    success: false,
+    error: 'Unauthorized access',
+  });
 }
 
-export { checkUsername, checkUserId };
+export {
+  checkRegistration, checkLogin, isAuthenticated,
+};

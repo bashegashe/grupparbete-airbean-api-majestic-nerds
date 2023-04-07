@@ -1,8 +1,12 @@
+import { insertOrder } from '../../models/beansModel.js';
+
 const MakeOrderController = {
   async makeOrder(req, res) {
-    const { details } = req.body;
+    const { details, userId } = req.body;
 
-    res.json({ success: true, details });
+    const result = await insertOrder(details.order, userId);
+
+    res.json(result);
   },
 };
 

@@ -1,8 +1,12 @@
+import { authenticateLogin } from '../../models/userModel.js';
+
 const LoginController = {
   async login(req, res) {
     const { username, password } = req.body;
 
-    res.json({ success: true, username, password });
+    const result = await authenticateLogin(username, password);
+
+    res.json(result);
   },
 };
 
