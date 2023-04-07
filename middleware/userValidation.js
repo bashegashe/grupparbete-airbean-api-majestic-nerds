@@ -1,46 +1,44 @@
 import { usernameExists, userIdExists } from '../models/userModel.js';
 
-async function checkUsername(req, res, next) {
+async function checkRegistration(req, res, next) {
   const { body } = req;
 
-  if ('username' in body) {
-    const exists = await usernameExists(body.username);
-    if (exists) {
-      res.json({ success: false, message: 'Username already exists' });
-    } else {
-      next();
-    }
-  } else {
-    res.json({ success: false, message: 'Username missing in body' });
+  if (!body?.username || !body?.password) {
+    return res.json({ success: false, message: 'Username or password missing in body' });
   }
+
+  const exists = await usernameExists(body.username);
+
+  if (exists) {
+    return res.json({ success: false, message: 'Username already exists' });
+  }
+
+  next();
 }
 
 async function checkLogin(req, res, next) {
   const { body } = req;
 
-  if ('username' in body && 'password' in body) {
-    next();
-  } else {
-    res.json({ success: false, message: 'Username or password missing in body' });
+  if (!body?.username || !body?.password) {
+    return res.json({ success: false, message: 'Username or password missing in body' });
   }
+
+  next();
 }
 
-async function checkUserId(req, res, next) {
+async function isAuthenticated(req, res, next) {
   const { userId } = req.body;
 
-  if (!userId) {
+  if (userId && await userIdExists(userId)) {
     return next();
   }
 
-  const exists = await userIdExists(userId);
-
-  if (exists) {
-    res.locals.isAuthorized = true;
-  } else {
-    return res.status(401).json({ success: false, error: 'Unauthorized access' });
-  }
-
-  return next();
+  res.status(401).json({
+    success: false,
+    error: 'Unauthorized access',
+  });
 }
 
-export { checkUsername, checkUserId, checkLogin };
+export {
+  checkRegistration, checkLogin, isAuthenticated,
+};

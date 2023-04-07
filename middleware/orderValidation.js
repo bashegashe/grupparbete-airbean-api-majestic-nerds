@@ -1,4 +1,5 @@
 import { itemExists } from '../models/beansModel.js';
+import { userIdExists } from '../models/userModel.js';
 
 async function checkOrder(req, res, next) {
   const { body } = req;
@@ -11,7 +12,7 @@ async function checkOrder(req, res, next) {
     return res.status(400).json({ success: false, message: 'Invalid or no data in order' });
   }
 
-  if (body.userId === '') {
+  if ('userId' in body && !(await userIdExists(body.userId))) {
     return res.status(401).json({ success: false, error: 'Unauthorized access' });
   }
 
@@ -20,6 +21,7 @@ async function checkOrder(req, res, next) {
     const exists = await itemExists(body.details.order[i]);
     if (!exists) {
       error = true;
+      break;
     }
   }
   if (!error) {

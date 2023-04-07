@@ -27,7 +27,12 @@ async function insertOrder(order, userId) {
     orderObj.userId = userId;
   }
 
-  historyDatabase.insert(orderObj);
+  await historyDatabase.insert(orderObj);
+
+  return {
+    eta: orderObj.orderDeliveryTime,
+    orderNr: orderObj.orderNr,
+  };
 }
 
 async function findOrderInDatabase(orderNr) {
